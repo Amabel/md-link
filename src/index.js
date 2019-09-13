@@ -1,25 +1,28 @@
-async function handler(event, context) {
-  // Access parameters
-  const username = event['queryStringParameters']['username']
+import axios from 'axios'
+import { parse } from 'node-html-parser'
 
-  // Return format :
-  // When Lambda Proxy integration is enabled
-  return {
-    isBase64Encoded: false,
-    statusCode: 200,
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
-    },
-    body: JSON.stringify(username),
-  }
-  // When Lambda Proxy integration is disabled
-  // return { username }
+async function handler(event, context) {
+  const url = event['queryStringParameters']['url']
+  const html = await fetchHTML(url)
+  const title = getTitleFromHtml(html)
+
+  return { title }
+}
+
+async function fetchHTML(url) {
+  const res = await axios({
+    method: 'get',
+    url,
+  })
+  return res.data
+}
+
+function getTitleFromHtml(html) {
+  const root = parse(html)
+  return root.querySelectorAll('html head title')[0].childNodes[0].rawText
 }
 
 exports.handler = handler
 
 // For debugging
-handler({ queryStringParameters: { username: 'amabel' } }, null)
+handler({ queryStringParameters: { url: 'https://github.com/Amabel' } }, null)
