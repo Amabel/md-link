@@ -2,7 +2,7 @@ import axios from 'axios'
 import { parse } from 'node-html-parser'
 
 async function handler(event, context) {
-  const url = event['queryStringParameters']['url']
+  const url = (event && event['queryStringParameters'] && event['queryStringParameters']['url']) || undefined
   const html = await fetchHTML(url)
   const title = getTitleFromHtml(html)
 
