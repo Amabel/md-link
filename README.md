@@ -1,8 +1,8 @@
-# AWS Lambda Seed
+# Markdown Link
 
 Coding AWS lambda with ESNext
 
-## Usage
+## Development
 
 ### Install dependencies
 
@@ -16,28 +16,12 @@ $ npm install
 $ npm run build
 ```
 
-### Publish
-
-NOTE: You need to manually create a function on AWS Lambda with the same name for the first time, then using this command to update it.
+### Run
 
 ```
-$ npm run publish
+$ npm run start
 ```
-
-## Troubleshooting
-
-Q: Runtime.ImportModuleError
-
-```
-"errorType": "Runtime.ImportModuleError",
-"errorMessage": "Error: Cannot find module 'index'"
-```
-
-A: Change the handler from `index.handler` to `dist/index.handler`
-
-|<img src="./images/handler-settings.png" width="380px">|
-|-|
 
 ## License
 
-[MIT](https://github.com/Amabel/aws-lambda-seed/blob/master/LICENSE)
+[MIT](https://github.com/Amabel/md-link/blob/master/LICENSE)
