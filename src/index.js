@@ -6,7 +6,7 @@ async function handler(event, context) {
   const html = await fetchHTML(url)
   const title = getTitleFromHtml(html)
 
-  return { title }
+  return { title, url }
 }
 
 async function fetchHTML(url) {
