@@ -16,7 +16,7 @@ async function handler(event, context) {
       'Access-Control-Allow-Headers': 'Content-Type',
       'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
     },
-    body: JSON.stringify({ data }),
+    body: JSON.stringify({ ...data }),
   }
 }
 
