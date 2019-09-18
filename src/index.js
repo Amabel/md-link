@@ -5,8 +5,19 @@ async function handler(event, context) {
   const url = (event && event['queryStringParameters'] && event['queryStringParameters']['url']) || undefined
   const html = await fetchHTML(url)
   const title = getTitleFromHtml(html)
+  const data = { title, url }
 
-  return { title, url }
+  return {
+    isBase64Encoded: false,
+    statusCode: 200,
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
+    },
+    body: JSON.stringify({ data }),
+  }
 }
 
 async function fetchHTML(url) {
