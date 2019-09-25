@@ -2,21 +2,45 @@ import axios from 'axios'
 import { parse } from 'node-html-parser'
 
 async function handler(event, context) {
-  const url = (event && event['queryStringParameters'] && event['queryStringParameters']['url']) || undefined
-  const html = await fetchHTML(url)
-  const title = getTitleFromHtml(html)
-  const data = { title, url }
+  const headers = {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
+  }
 
-  return {
-    isBase64Encoded: false,
-    statusCode: 200,
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
-    },
-    body: JSON.stringify({ ...data }),
+  const url = (event && event['queryStringParameters'] && event['queryStringParameters']['url']) || undefined
+
+  if (!url) {
+    const body = {
+      message: 'missing parameter: url',
+    }
+    return {
+      isBase64Encoded: false,
+      statusCode: 422,
+      headers,
+      body: JSON.stringify(body),
+    }
+  }
+
+  try {
+    const html = await fetchHTML(url)
+    const title = getTitleFromHtml(html)
+    const data = { title, url }
+
+    return {
+      isBase64Encoded: false,
+      statusCode: 200,
+      headers,
+      body: JSON.stringify({ ...data }),
+    }
+  } catch (e) {
+    return {
+      isBase64Encoded: false,
+      statusCode: 422,
+      headers,
+      body: JSON.stringify(e),
+    }
   }
 }
 
