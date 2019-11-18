@@ -26,6 +26,8 @@ async function handler(event, context) {
   try {
     const html = await fetchHTML(url)
     const title = getTitleFromHtml(html)
+      .replace(/(\r\n|\n|\r)/gm, '')
+      .trim()
     const data = { title, url }
 
     return {
